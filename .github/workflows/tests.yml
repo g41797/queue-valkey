@@ -7,12 +7,13 @@ jobs:
       matrix:
         php: ["8.2", "8.3"]
     steps:
+      - run: bash docker/start.sh
+
       - uses: actions/checkout@v3
 
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: zip
           tools: composer
         env:
           fail-fast: true
@@ -20,9 +21,6 @@ jobs:
       - uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
-          php_extensions: zip
-
-      - run: bash docker/start.sh
 
       - run: vendor/bin/phpunit --testsuite Tests
 
