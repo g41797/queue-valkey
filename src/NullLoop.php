@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Sqs;
+namespace G41797\Queue\Valkey;
 
 use Yiisoft\Queue\Cli\LoopInterface;
 

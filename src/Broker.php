@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Sqs;
+namespace G41797\Queue\Valkey;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -16,14 +16,14 @@ use Yiisoft\Queue\Message\MessageInterface;
 
 use Interop\Queue\Producer;
 
-use Enqueue\Sqs\SqsContext;
-use Enqueue\Sqs\SqsConsumer;
-use Enqueue\Sqs\SqsConnectionFactory;
-use Enqueue\Sqs\SqsDestination;
+use EnQueue\Redis\RedisContext;
+use EnQueue\Redis\RedisConsumer;
+use EnQueue\Redis\RedisConnectionFactory;
+use EnQueue\Redis\RedisDestination;
 
-use G41797\Queue\Sqs\Configuration as BrokerConfiguration;
-use G41797\Queue\Sqs\Exception\NotSupportedStatusMethodException;
-use G41797\Queue\Sqs\Exception\NotConnectedSqsException;
+use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
+use G41797\Queue\Valkey\Exception\NotSupportedStatusMethodException;
+use G41797\Queue\Valkey\Exception\NotConnectedValkeyException;
 
 
 class Broker implements BrokerInterface
@@ -80,7 +80,7 @@ class Broker implements BrokerInterface
         $this->prepare();
 
         if ($this->producer == null) {
-            $this->producer = $this->sqs->createProducer();
+            $this->producer = $this->valkey->createProducer();
         }
 
         $env = $this->submit($job);
@@ -99,13 +99,13 @@ class Broker implements BrokerInterface
             $jobId      = Uuid::uuid7()->toString();
             $payload    = $this->serializer->serialize($job);
 
-            $sqsMsg     = $this->sqs->createMessage(body: $payload);
+            $valkeyMsg     = $this->valkey->createMessage(body: $payload);
 
-            $sqsMsg->setMessageDeduplicationId($jobId);
-            $sqsMsg->setMessageId($jobId);
-            $sqsMsg->setMessageGroupId(Broker::SUBSCRIPTION_NAME);
+            $valkeyMsg->setMessageDeduplicationId($jobId);
+            $valkeyMsg->setMessageId($jobId);
+            $valkeyMsg->setMessageGroupId(Broker::SUBSCRIPTION_NAME);
 
-            $this->producer->send($this->queue, $sqsMsg);
+            $this->producer->send($this->queue, $valkeyMsg);
 
             return new IdEnvelope($job, $jobId);
         }
@@ -119,7 +119,7 @@ class Broker implements BrokerInterface
         throw new NotSupportedStatusMethodException();
     }
 
-    private ?SqsConsumer $receiver = null;
+    private ?ValkeyConsumer $receiver = null;
 
     public function pull(float $timeout): ?IdEnvelope
     {
@@ -127,19 +127,19 @@ class Broker implements BrokerInterface
 
         if ($this->receiver == null)
         {
-            $this->receiver = $this->sqs->createConsumer($this->queue);
+            $this->receiver = $this->valkey->createConsumer($this->queue);
         }
 
         try
         {
-            $sqsMsg = $this->receiver->receive((int)(ceil($timeout*1000.0)));
+            $valkeyMsg = $this->receiver->receive((int)(ceil($timeout*1000.0)));
 
-            if (null == $sqsMsg) { return null;}
+            if (null == $valkeyMsg) { return null;}
 
-            $job    = $this->serializer->unserialize($sqsMsg->getBody());
-            $jid    = $sqsMsg->getMessageId();
+            $job    = $this->serializer->unserialize($valkeyMsg->getBody());
+            $jid    = $valkeyMsg->getMessageId();
 
-            $this->receiver->acknowledge($sqsMsg);
+            $this->receiver->acknowledge($valkeyMsg);
 
             return new IdEnvelope($job, $jid);
         }
@@ -171,8 +171,8 @@ class Broker implements BrokerInterface
         return !empty($id);
     }
 
-    public ?SqsContext      $sqs    = null;
-    public SqsDestination   $queue;
+    public ?ValkeyContext      $valkey    = null;
+    public ValkeyDestination   $queue;
     public string       $queueUrl;
 
     private function prepare(): void
@@ -183,29 +183,29 @@ class Broker implements BrokerInterface
             return;
         }
         catch (\Exception $exc) {
-            throw new NotConnectedSqsException();
+            throw new NotConnectedValkeyException();
         }
     }
 
     private function init(): void
     {
-        if ($this->sqs !== null)
+        if ($this->valkey !== null)
         {
             return;
         }
 
-        $sqs = (new SqsConnectionFactory($this->configuration->raw()))->createContext();
+        $valkey = (new ValkeyConnectionFactory($this->configuration->raw()))->createContext();
 
-        $this->queue = $sqs->createQueue($this->queueName);
+        $this->queue = $valkey->createQueue($this->queueName);
 
         $this->queue->setFifoQueue(true);
         $this->queue->setReceiveMessageWaitTimeSeconds((int)20);
         $this->queue->setContentBasedDeduplication(true);
 
-        $sqs->declareQueue($this->queue);
+        $valkey->declareQueue($this->queue);
 
-        $this->queueUrl = $sqs->getQueueUrl($this->queue); // throws exception for failure
-        $this->sqs      = $sqs;
+        $this->queueUrl = $valkey->getQueueUrl($this->queue); // throws exception for failure
+        $this->valkey      = $valkey;
 
         return;
     }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Yiisoft\Queue\Adapter\AdapterInterface;
-use G41797\Queue\Sqs\Adapter;
+use G41797\Queue\Valkey\Adapter;
 
 // TODO: how to proceed
 // https://github.com/yiisoft/queue/blob/master/config/di.php
@@ -12,5 +12,5 @@ use G41797\Queue\Sqs\Adapter;
 // https://github.com/yiisoft/factory
 
 return [
-    Yiisoft\Queue\Adapter\AdapterInterface::class => G41797\Queue\Sqs\Adapter::class,
+    Yiisoft\Queue\Adapter\AdapterInterface::class => G41797\Queue\Valkey\Adapter::class,
 ];

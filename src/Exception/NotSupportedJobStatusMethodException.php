@@ -1,6 +1,6 @@
 <?php
 
-namespace G41797\Queue\Sqs\Exception;
+namespace G41797\Queue\Valkey\Exception;
 
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 

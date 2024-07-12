@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Sqs\Functional;
+namespace G41797\Queue\Valkey\Functional;
 
 use PHPUnit\Framework\TestCase;
 
 use Yiisoft\Queue\Message\Message;
 use Yiisoft\Queue\Message\MessageInterface;
 
-use G41797\Queue\Sqs\Adapter;
-use G41797\Queue\Sqs\Broker;
-use G41797\Queue\Sqs\Configuration;
+use G41797\Queue\Valkey\Adapter;
+use G41797\Queue\Valkey\Broker;
+use G41797\Queue\Valkey\Configuration;
 
 
 abstract class FunctionalTestCase extends TestCase

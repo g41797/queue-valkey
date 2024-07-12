@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Sqs\Functional;
+namespace G41797\Queue\Valkey\Functional;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -12,9 +12,9 @@ use Yiisoft\Queue\Message\IdEnvelope;
 use Yiisoft\Queue\Message\Message;
 use Yiisoft\Queue\Message\MessageInterface;
 
-use G41797\Queue\Sqs\Adapter;
-use G41797\Queue\Sqs\CheckMessageHandler;
-use G41797\Queue\Sqs\NullLoop;
+use G41797\Queue\Valkey\Adapter;
+use G41797\Queue\Valkey\CheckMessageHandler;
+use G41797\Queue\Valkey\NullLoop;
 
 class AdapterTest extends FunctionalTestCase
 {

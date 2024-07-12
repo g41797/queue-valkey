@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Sqs;
+namespace G41797\Queue\Valkey;
 
 use Psr\Log\LoggerInterface;
-use G41797\Queue\Sqs\Configuration as BrokerConfiguration;
+use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
 
 class BrokerFactory implements BrokerFactoryInterface
 {

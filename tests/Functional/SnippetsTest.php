@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Sqs\Functional;
+namespace G41797\Queue\Valkey\Functional;
 
-use G41797\Queue\Sqs\Broker;
+use G41797\Queue\Valkey\Broker;
 
 use Aws\Exception\AwsException;
-use Aws\Sqs\SqsClient;
+use Aws\Valkey\ValkeyClient;
 use Aws\Result;
 
 class SnippetsTest extends FunctionalTestCase
@@ -22,9 +22,9 @@ class SnippetsTest extends FunctionalTestCase
     {
     }
 
-    static public function createClient(): ?SqsClient
+    static public function createClient(): ?ValkeyClient
     {
-        return new SqsClient([
+        return new ValkeyClient([
             'credentials' => false,
             'region' => 'us-east-1',
             'version' => 'latest',

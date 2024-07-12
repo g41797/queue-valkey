@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace G41797\Queue\Valkey\Exception;
 
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-class NotSupportedStatusMethodException  extends \RuntimeException implements FriendlyExceptionInterface
+class NotConnectedValkeyException extends \RuntimeException implements FriendlyExceptionInterface
 {
     public function getName(): string
     {
-        return 'Not supported status API.';
+        return 'Not connected to Valkey.';
     }
 
     public function getSolution(): ?string
     {
-        return 'Do not use status API';
+        return 'Check your Valkey configuration.';
     }
 }
 

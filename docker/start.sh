@@ -35,8 +35,8 @@ echo
 echo Start LocalStack
 echo
 export LOCALSTACK_AUTH_TOKEN="ls-KESiVaLi-4697-7857-MEna-ziqIXeSaf962"
-export LOCALSTACK_SERVICEES="sqs"
-export LOCALSTACK_SQS_ENDPOINT_STRATEGY="path"
+export LOCALSTACK_SERVICEES="valkey"
+export LOCALSTACK_VALKEY_ENDPOINT_STRATEGY="path"
 localstack start -d
 
 echo
@@ -59,13 +59,13 @@ pip install awscli-local
 pip install awscli
 
 echo
-echo Check SQS service and aws cli
+echo Check VALKEY service and aws cli
 echo
 pwd
 echo Create Queue
-awslocal sqs create-queue --queue-name test-queue.fifo --attributes FifoQueue=true,ContentBasedDeduplication=true
+awslocal valkey create-queue --queue-name test-queue.fifo --attributes FifoQueue=true,ContentBasedDeduplication=true
 echo Delete Queue
-awslocal sqs delete-queue --queue-url "http://localhost.localstack.cloud:4566/queue/us-east-1/000000000000/test-queue.fifo"
+awslocal valkey delete-queue --queue-url "http://localhost.localstack.cloud:4566/queue/us-east-1/000000000000/test-queue.fifo"
 
 date
 pwd
