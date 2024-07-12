@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
+         requireCoverageMetadata="false"
+         beStrictAboutCoverageMetadata="true"
+         beStrictAboutOutputDuringTests="true"
+         executionOrder="random"
+         failOnRisky="true"
+         failOnWarning="false"
+         stopOnFailure="false"
+         stopOnWarning="false"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         colors="true"
+>
+    <php>
+        <ini name="error_reporting" value="-1"/>
+        <env name="ENDPOINT" value="http://localhost.localstack.cloud:4566" force="true" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Tests">
+            <directory>./tests/Functional</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
+</phpunit>

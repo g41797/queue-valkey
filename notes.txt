@@ -1,0 +1,106 @@
+Emulator
+https://docs.localstack.cloud/overview/
+
+LocalStack installation
+https://docs.localstack.cloud/getting-started/installation/
+
+LocalStack SQS
+https://docs.localstack.cloud/user-guide/aws/sqs/
+
+Using LocalStack with Docker Compose
+https://whattodevnow.medium.com/using-localstack-with-docker-compose-to-mock-aws-services-bb25a5b01d4b
+
+Use wait-for-it.sh with LocalStack
+https://github.com/localstack/localstack/issues/732#issuecomment-1438774446
+
+How to fake AWS locally with LocalStack
+https://dev.to/goodidea/how-to-fake-aws-locally-with-localstack-27me
+
+Local Key Management Service (KMS)
+https://docs.localstack.cloud/user-guide/aws/kms/
+
+Local Secrets Manager
+https://docs.localstack.cloud/user-guide/aws/secretsmanager/
+
+AWS CLI v2
+https://docs.aws.amazon.com/cli/latest/reference/
+
+SQS Message Attributes Shorthand error
+https://github.com/aws/aws-cli/issues/3637
+
+PHP on AWS
+https://aws.amazon.com/developer/language/php/
+
+PHP SDK
+https://docs.aws.amazon.com/sdk-for-php/
+
+SQS code examples
+https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/php/example_code/sqs
+
+How to use the PHP AWS SDK with LocalStack.
+https://docs.localstack.cloud/user-guide/integrations/sdks/php/
+
+localstack-aws-sdk-examples
+https://github.com/localstack/localstack-aws-sdk-examples/tree/main/php/s3/s3-crud
+
+Transparent Endpoint Injection
+https://docs.localstack.cloud/user-guide/tools/transparent-endpoint-injection/
+
+Create anonymous clients
+https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_anonymous.html
+
+SQS overview
+https://aws.amazon.com/documentation-overview/sqs/
+
+Amazon Simple Queue Service Documentation
+https://docs.aws.amazon.com/sqs/
+
+AWS Cli create queue
+https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html
+
+FIFO queues in Amazon SQS
+https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html
+
+FIFO queue delivery logic in Amazon SQS
+https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-understanding-logic.html
+
+Consuming messages using long polling
+https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html#sqs-long-polling
+
+AWS service endpoints
+https://docs.aws.amazon.com/general/latest/gr/rande.html
+
+Lambda examples using SDK for PHP
+https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/php_lambda_code_examples.html
+
+Serverless Queues for Laravel on AWS Lambda (SQS)
+https://github.com/christoph-kluge/bref-sqs-laravel
+
+Serverless Snippets
+https://github.com/aws-samples/serverless-snippets
+
+Using Lambda with Amazon SQS
+https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+
+Amazon SQS Transport
+https://github.com/php-enqueue/sqs
+https://php-enqueue.github.io/transport/sqs/
+
+sqs-simple (PHP)
+https://github.com/tedicela/sqs-simple
+
+Bref SQS asynchronous tasks
+https://bref.sh/docs/use-cases/sqs
+
+Symfony Hello world with SQS
+https://github.com/brefphp/examples/tree/master/Symfony/sqs
+
+Configuration from options array
+https://github.com/basis-company/nats.php/blob/main/src/Configuration.php
+
+AWS SNS vs SQS
+https://ably.com/topic/aws-sns-vs-sqs
+
+PHPUnit : How to force an environment variable in Unit Test ?
+https://www.sudhanshubajaj.com/phpunit-how-to-force-an-environment-variable-in-unit-test/
+
