@@ -13,6 +13,7 @@
     "require": {
         "php": ">=8.2",
         "enqueue/redis": "^0.10.19",
+        "predis/predis": "^2.1.0",
         "ramsey/uuid": "^4.7",
         "yiisoft/factory": "^1.0",
         "yiisoft/friendly-exception": "^1.0",

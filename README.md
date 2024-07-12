@@ -37,14 +37,15 @@ Default configuration:
     'path' => null,         // Path of the UNIX domain socket file used when connecting to Valkey using UNIX domain sockets.
 ]
 ``` 
-## Redis
+## Redis support
 
-According to [Valkey](https://github.com/orgs/valkey-io/discussions/722#discussioncomment-9927734):
+queue-valkey supports also [Redis](https://redis.io/):
+- queue-valkey itself uses existing Redis client libraries 
+- according to [Valkey](https://github.com/orgs/valkey-io/discussions/722#discussioncomment-9927734):
 > "...Valkey 7.2 is fully compatible with Redis 7.2 
 > and drop-in replacement is fully supported. 
 > There is no need to change any of your application code."
 
-Moreover queue-valkey itself uses existing Redis client libraries.
 
 ## Limitations
 

@@ -16,10 +16,10 @@ use Yiisoft\Queue\Message\MessageInterface;
 
 use Interop\Queue\Producer;
 
-use EnQueue\Redis\RedisContext;
-use EnQueue\Redis\RedisConsumer;
-use EnQueue\Redis\RedisConnectionFactory;
-use EnQueue\Redis\RedisDestination;
+use Enqueue\Redis\RedisContext;
+use Enqueue\Redis\RedisConsumer;
+use Enqueue\Redis\RedisConnectionFactory;
+use Enqueue\Redis\RedisDestination;
 
 use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
 use G41797\Queue\Valkey\Exception\NotSupportedStatusMethodException;
@@ -41,16 +41,10 @@ class Broker implements BrokerInterface
     ) {
         $this->serializer = new JsonMessageSerializer();
 
-        $this->queueName = $this->channelName . '.fifo';
+        $this->queueName = $this->channelName;
 
         if (null == $configuration) {
             $this->configuration = new BrokerConfiguration();
-        }
-
-        $endpoint = self::defaultEndpoint();
-
-        if (isset($endpoint)) {
-            $this->configuration->update(['endpoint' => $endpoint]);
         }
 
         if (null == $logger) {
@@ -99,11 +93,7 @@ class Broker implements BrokerInterface
             $jobId      = Uuid::uuid7()->toString();
             $payload    = $this->serializer->serialize($job);
 
-            $valkeyMsg     = $this->valkey->createMessage(body: $payload);
-
-            $valkeyMsg->setMessageDeduplicationId($jobId);
-            $valkeyMsg->setMessageId($jobId);
-            $valkeyMsg->setMessageGroupId(Broker::SUBSCRIPTION_NAME);
+            $valkeyMsg     = $this->valkey->createMessage(body: $payload, properties:['jobid' => $jobId]);
 
             $this->producer->send($this->queue, $valkeyMsg);
 
@@ -119,7 +109,7 @@ class Broker implements BrokerInterface
         throw new NotSupportedStatusMethodException();
     }
 
-    private ?ValkeyConsumer $receiver = null;
+    private ?RedisConsumer $receiver = null;
 
     public function pull(float $timeout): ?IdEnvelope
     {
@@ -137,7 +127,7 @@ class Broker implements BrokerInterface
             if (null == $valkeyMsg) { return null;}
 
             $job    = $this->serializer->unserialize($valkeyMsg->getBody());
-            $jid    = $valkeyMsg->getMessageId();
+            $jid    = $valkeyMsg->getProperty('jobid');
 
             $this->receiver->acknowledge($valkeyMsg);
 
@@ -171,9 +161,8 @@ class Broker implements BrokerInterface
         return !empty($id);
     }
 
-    public ?ValkeyContext      $valkey    = null;
-    public ValkeyDestination   $queue;
-    public string       $queueUrl;
+    public ?RedisContext      $valkey    = null;
+    public RedisDestination   $queue;
 
     private function prepare(): void
     {
@@ -194,25 +183,11 @@ class Broker implements BrokerInterface
             return;
         }
 
-        $valkey = (new ValkeyConnectionFactory($this->configuration->raw()))->createContext();
-
+        $valkey = (new RedisConnectionFactory($this->configuration->raw()))->createContext();
         $this->queue = $valkey->createQueue($this->queueName);
-
-        $this->queue->setFifoQueue(true);
-        $this->queue->setReceiveMessageWaitTimeSeconds((int)20);
-        $this->queue->setContentBasedDeduplication(true);
-
-        $valkey->declareQueue($this->queue);
-
-        $this->queueUrl = $valkey->getQueueUrl($this->queue); // throws exception for failure
-        $this->valkey      = $valkey;
+        $this->valkey   = $valkey;
 
         return;
-    }
-
-    static public function defaultEndpoint(): string|null
-    {
-        return $_ENV['ENDPOINT'];
     }
 
 }

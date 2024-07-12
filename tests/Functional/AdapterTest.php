@@ -13,6 +13,7 @@ use Yiisoft\Queue\Message\Message;
 use Yiisoft\Queue\Message\MessageInterface;
 
 use G41797\Queue\Valkey\Adapter;
+use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
 use G41797\Queue\Valkey\CheckMessageHandler;
 use G41797\Queue\Valkey\NullLoop;
 
@@ -56,13 +57,13 @@ class AdapterTest extends FunctionalTestCase
 
     protected function createSubmitter() : AdapterInterface {
         $logger = $this->getLogger();
-        return new Adapter(brokerConfiguration: SubmitterTest::testConfigArray(), logger: $logger);
+        return new Adapter(brokerConfiguration: BrokerConfiguration::default(), logger: $logger);
     }
 
     protected function createWorker() : AdapterInterface {
         $logger = $this->getLogger();
         $loop = $this->getLoop();
-        return new Adapter(brokerConfiguration: SubmitterTest::testConfigArray(),logger: $logger, loop: $loop, timeoutSec: 3.0);
+        return new Adapter(brokerConfiguration: BrokerConfiguration::default(),logger: $logger, loop: $loop, timeoutSec: 3.0);
     }
 
     static function getJob(): MessageInterface {
@@ -73,16 +74,14 @@ class AdapterTest extends FunctionalTestCase
         $job = self::getJob();
 
         $submitter = $this->createSubmitter();
-        $this->assertNotNull($submitter);
 
         $count = 10;
 
         $submitted = $this->submit($submitter, $job, $count);
 
-        $this->assertEquals($count, count($submitted));
+        $this->assertCount($count, $submitted);
 
         $worker = $this->createWorker();
-        $this->assertNotNull($worker);
 
         $this->process($worker, $job, $submitted);
 
@@ -97,7 +96,6 @@ class AdapterTest extends FunctionalTestCase
 
             $submitted = $submitter->push($job);
 
-            $this->assertNotNull($submitter);
             $this->assertTrue($submitted instanceof IdEnvelope);
             $this->assertArrayHasKey(IdEnvelope::MESSAGE_ID_KEY, $submitted->getMetadata());
             $id = $submitted->getMetadata()[IdEnvelope::MESSAGE_ID_KEY];

@@ -28,14 +28,21 @@ final class Configuration
     static public function default(): array
     {
         return [
-            'key' => null,
-            'secret' => null,
-            'token' => null,
-            'region' => 'us-east-1',
-            'retries' => 3,
-            'version' => 'latest',
-            'profile' => null,
-            'queue_owner_aws_account_id' => null
+            'scheme' => 'redis',
+            'scheme_extensions' => [],
+            'host' => '127.0.0.1',
+            'port' => 6379,
+            'path' => null,
+            'database' => null,
+            'password' => null,
+            'async' => false,
+            'persistent' => false,
+            'lazy' => false,
+            'timeout' => 5.0,
+            'read_write_timeout' => null,
+            'predis_options' => null,
+            'ssl' => null,
+            'redelivery_delay' => 300,
         ];
     }
 }
