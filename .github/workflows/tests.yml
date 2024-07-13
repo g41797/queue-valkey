@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: bash docker/start.sh
+      - run: docker/start.sh
 
       - uses: shivammathur/setup-php@v2
         with:
