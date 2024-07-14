@@ -42,5 +42,6 @@ abstract class BaseTestCase extends FunctionalTestCase
         $process = new Process($command);
         $this->processes[] = $process;
         $process->start();
+        return;
     }
 }

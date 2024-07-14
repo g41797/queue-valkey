@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export IMAGE=docker.io/bitnami/valkey:latest
+export QPORT=6379
 
 if ! [ -f docker/docker-compose.yml ]; then
   export DOCOMPOSE=./docker-compose.yml
@@ -10,11 +11,11 @@ fi
 
 docker compose -f $DOCOMPOSE up -d
 
-echo 'Waiting for open port 6379'
+echo Waiting for open port $QPORT
 
 for (( ; ; ))
 do
-    sudo netstat --tcp --listening --programs --numeric|grep -o 6379|wc -l >/tmp/openedports
+    sudo netstat --tcp --listening --programs --numeric|grep -o $QPORT|wc -l >/tmp/openedports
     OPENED=$(< /tmp/openedports)
     if [ $OPENED -gt 0 ];
     then
@@ -29,7 +30,7 @@ echo 'ok'
 echo ''
 
 date
-sudo netstat --tcp --listening --programs --numeric|grep 6379
+sudo netstat --tcp --listening --programs --numeric|grep $QPORT
 echo ''
 
 

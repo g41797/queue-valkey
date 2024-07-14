@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace G41797\Queue\Valkey;
+namespace G41797\Queue\Valkey\Support;
 
 use Yiisoft\Queue\Message\IdEnvelope;
 use Yiisoft\Queue\Message\Message;

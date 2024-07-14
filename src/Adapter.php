@@ -12,6 +12,7 @@ use Yiisoft\Queue\Cli\LoopInterface;
 use Yiisoft\Queue\Enum\JobStatus;
 use Yiisoft\Queue\Message\MessageInterface;
 
+use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
 use G41797\Queue\Valkey\Exception\NotSupportedStatusMethodException;
 
 class Adapter implements AdapterInterface
@@ -25,7 +26,7 @@ class Adapter implements AdapterInterface
         private array               $brokerConfiguration = [],
         private ?LoggerInterface    $logger = null,
         private ?LoopInterface      $loop = null,
-        private float               $timeoutSec = 0.0,
+        private float               $timeoutSec = 3.0,
     ) {
         $this->brokerFactory = new BrokerFactory();
 
@@ -106,5 +107,10 @@ class Adapter implements AdapterInterface
                                     );
         }
         return $this->broker;
+    }
+
+    static public function default(LoggerInterface $logger = null, LoopInterface $loop = null): AdapterInterface
+    {
+        return new Adapter(brokerConfiguration: BrokerConfiguration::default(), logger: $logger, loop: $loop);
     }
 }

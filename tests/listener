@@ -6,7 +6,6 @@ declare(strict_types=1);
 use Psr\Log\NullLogger;
 
 use G41797\Queue\Valkey\Adapter;
-use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
 
 use G41797\Queue\Valkey\Support\FileHelper;
 use G41797\Queue\Valkey\Support\SimpleMessageHandler;
@@ -28,6 +27,7 @@ use Yiisoft\Queue\Middleware\Push\MiddlewareFactoryPush;
 use Yiisoft\Queue\Middleware\Push\PushMiddlewareDispatcher;
 use Yiisoft\Queue\Queue;
 use Yiisoft\Queue\QueueFactory;
+use Yiisoft\Queue\Adapter\AdapterInterface;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -47,7 +47,7 @@ $worker = new \Yiisoft\Queue\Worker\Worker(
 );
 $loop = new SignalLoop();
 $pushMiddlewareDispatcher = new PushMiddlewareDispatcher(new MiddlewareFactoryPush($container, $callableFactory));
-$adapter = new Adapter(brokerConfiguration: BrokerConfiguration::default(), logger: $logger, loop: $loop);
+$adapter = Adapter::default(logger: $logger, loop: $loop);
 $queue = new Queue(
     $worker,
     $loop,

@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace G41797\Queue\Valkey\Functional;
 
+use G41797\Queue\Valkey\Adapter;
+use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
+use G41797\Queue\Valkey\NullLoop;
+use G41797\Queue\Valkey\Support\CheckMessageHandler;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-
 use Yiisoft\Queue\Adapter\AdapterInterface;
 use Yiisoft\Queue\Message\IdEnvelope;
 use Yiisoft\Queue\Message\Message;
 use Yiisoft\Queue\Message\MessageInterface;
-
-use G41797\Queue\Valkey\Adapter;
-use G41797\Queue\Valkey\Configuration as BrokerConfiguration;
-use G41797\Queue\Valkey\CheckMessageHandler;
-use G41797\Queue\Valkey\NullLoop;
 
 class AdapterTest extends FunctionalTestCase
 {
@@ -57,13 +55,13 @@ class AdapterTest extends FunctionalTestCase
 
     protected function createSubmitter() : AdapterInterface {
         $logger = $this->getLogger();
-        return new Adapter(brokerConfiguration: BrokerConfiguration::default(), logger: $logger);
+        return Adapter::default(logger: $logger);
     }
 
     protected function createWorker() : AdapterInterface {
         $logger = $this->getLogger();
         $loop = $this->getLoop();
-        return new Adapter(brokerConfiguration: BrokerConfiguration::default(),logger: $logger, loop: $loop, timeoutSec: 3.0);
+        return Adapter::default(logger: $logger, loop: $loop);
     }
 
     static function getJob(): MessageInterface {
